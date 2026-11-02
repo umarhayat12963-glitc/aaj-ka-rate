@@ -1,0 +1,24 @@
+import { NextResponse } from 'next/server';
+import { store, sessionFromCookie } from '../../../lib/store';
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+export async function GET() {
+  const enabled = store().ads.filter((a) => a.enabled);
+  return NextResponse.json({ ads: enabled, placements: ['top', 'hero', 'middle', 'bottom'] });
+}
+export async function POST(req: Request) {
+  const user = sessionFromCookie(req.headers.get('cookie'));
+  if (!user) return NextResponse.json({ ok: false, error: 'Pehle login karen.' }, { status: 401 });
+  const body = await req.json();
+  const ad = { id: `${Date.now()}`, clicks: 0, enabled: body.enabled !== false, ...body };
+  store().ads.push(ad);
+  return NextResponse.json({ ok: true, ad });
+}
+export async function DELETE(req: Request) {
+  const user = sessionFromCookie(req.headers.get('cookie'));
+  if (!user) return NextResponse.json({ ok: false, error: 'Pehle login karen.' }, { status: 401 });
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get('id');
+  store().ads = store().ads.filter((a) => a.id !== id);
+  return NextResponse.json({ ok: true });
+}
