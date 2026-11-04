@@ -12,22 +12,20 @@
 
 type RateRow = { id: string; name: string; category: string; unit: string; price: number | null; source: string; is_sample: boolean };
 
-type PgClient = {
-  connect(): Promise<void>;
-  query(sql: string, params?: unknown[]): Promise<{ rows: Record<string, unknown>[] }>;
-  end(): Promise<void>;
-};
+// Static import on purpose: a dynamic import string ('p'+'g') made
+// Vercel's bundler drop `pg` from the serverless bundle, so the
+// live site reported pgAvailable:false even with pg in package.json.
+// The static import guarantees pg is traced and deployed; it only
+// loads the module, it never connects unless DATABASE_URL is set.
+import { Client } from 'pg';
 
-type PgModule = { Client: new (cfg: { connectionString: string; ssl?: { rejectUnauthorized: boolean } }) => PgClient };
+type PgClient = InstanceType<typeof Client>;
 
 async function getClient(): Promise<PgClient | null> {
   const url = process.env.DATABASE_URL;
   if (!url) return null;
   try {
-    const spec = 'p' + 'g';
-    const mod = (await import(spec).catch(() => null)) as unknown as PgModule | null;
-    if (!mod?.Client) return null;
-    const client = new mod.Client({ connectionString: url, ssl: { rejectUnauthorized: false } });
+    const client = new Client({ connectionString: url, ssl: { rejectUnauthorized: false } });
     await client.connect();
     return client;
   } catch {
@@ -36,13 +34,7 @@ async function getClient(): Promise<PgClient | null> {
 }
 
 export async function pgAvailable(): Promise<boolean> {
-  try {
-    const spec = 'p' + 'g';
-    const mod = (await import(spec).catch(() => null)) as unknown as PgModule | null;
-    return !!mod?.Client;
-  } catch {
-    return false;
-  }
+  return true;
 }
 
 async function queryRows(sql: string, params: unknown[] = []): Promise<Record<string, unknown>[] | null> {
