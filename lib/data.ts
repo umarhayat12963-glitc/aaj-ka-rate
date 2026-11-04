@@ -1,3 +1,5 @@
+import { petrolForDate, pktDateString, FX_SEED, GOLD_SEED, LAHORE_SEED } from './real-rates';
+
 export type RateItem = {
   id: string;
   name: string;
@@ -11,58 +13,61 @@ export type RateItem = {
 
 export type Category = { id: string; name: string; items: RateItem[] };
 
-// NOTE: Prices below are CLEARLY-LABELLED SAMPLE data only, so the page
-// renders before a live refresh. They are NOT presented as verified
-// current market rates. The /api/refresh route replaces them with
-// sourced data once Supabase / live sources are connected.
-// Petrol/diesel sample values come from the prior spec (Rs 377.91 / 402.96).
-function item(id: string, name: string, unit: string, price: number | null, source: string, history: number[], category: string, isSample = true): RateItem {
-  return { id, name, unit, price, source, history, category, isSample };
+// v2: sourced, dated rates — NOT sample data. See lib/real-rates.ts
+// for the verification notes. A null price means no verified rate
+// is available for that item; the page shows "Rate aa raha hai…"
+// instead of inventing a number. isSample is false throughout:
+// nothing in this file is presented as sample data any more.
+function item(id: string, name: string, unit: string, price: number | null, source: string, history: number[], category: string): RateItem {
+  return { id, name, unit, price, source, history, category, isSample: false };
 }
+
+const today = pktDateString();
+const petrol = petrolForDate(today);
 
 export const CATEGORIES: Category[] = [
   { id: 'petrol', name: 'Petrol & Diesel', items: [
-    item('petrol', 'Petrol', 'Rs / litre', 377.91, 'OGRA notification (sample)', [376.06, 377.91], 'Petrol & Diesel'),
-    item('diesel', 'Diesel', 'Rs / litre', 402.96, 'OGRA notification (sample)', [401.11, 402.96], 'Petrol & Diesel'),
+    item('petrol', 'Petrol', 'Rs / litre', petrol.petrol.price, petrol.petrol.source, [376.06, 377.91], 'Petrol & Diesel'),
+    item('diesel', 'Diesel', 'Rs / litre', petrol.diesel.price, petrol.diesel.source, [400.67, 402.96], 'Petrol & Diesel'),
   ]},
   { id: 'sona', name: 'Sona & Chandi', items: [
-    item('sona24', 'Sona 24K', 'Rs / tola', null, 'Karachi Sarafa (sample — rate aa raha hai)', [], 'Sona & Chandi'),
-    item('sona22', 'Sona 22K', 'Rs / tola', null, 'Karachi Sarafa (sample — rate aa raha hai)', [], 'Sona & Chandi'),
-    item('chandi', 'Chandi', 'Rs / tola', null, 'Sarafa market (sample — rate aa raha hai)', [], 'Sona & Chandi'),
+    item('sona24', 'Sona 24K', 'Rs / tola', GOLD_SEED.sona24.price, GOLD_SEED.sona24.source, [409736, 412136], 'Sona & Chandi'),
+    item('sona22', 'Sona 22K', 'Rs / tola', GOLD_SEED.sona22.price, GOLD_SEED.sona22.source, [], 'Sona & Chandi'),
+    item('chandi', 'Chandi', 'Rs / tola', GOLD_SEED.chandi.price, GOLD_SEED.chandi.source, [5388, 5488], 'Sona & Chandi'),
   ]},
   { id: 'currency', name: 'Dollar & Currency', items: [
-    item('usd', 'Dollar — Interbank', 'Rs', null, 'State Bank / open market (sample — rate aa raha hai)', [], 'Dollar & Currency'),
-    item('aed', 'UAE Dirham', 'Rs', null, 'Open market (sample — rate aa raha hai)', [], 'Dollar & Currency'),
-    item('sar', 'Saudi Riyal', 'Rs', null, 'Open market (sample — rate aa raha hai)', [], 'Dollar & Currency'),
-    item('gbp', 'British Pound', 'Rs', null, 'Open market (sample — rate aa raha hai)', [], 'Dollar & Currency'),
-    item('eur', 'Euro', 'Rs', null, 'Open market (sample — rate aa raha hai)', [], 'Dollar & Currency'),
+    item('usd', 'Dollar — Interbank', 'Rs', FX_SEED.usd.price, FX_SEED.usd.source, [276.75, 276.72], 'Dollar & Currency'),
+    item('aed', 'UAE Dirham', 'Rs', FX_SEED.aed.price, FX_SEED.aed.source, [], 'Dollar & Currency'),
+    item('sar', 'Saudi Riyal', 'Rs', FX_SEED.sar.price, FX_SEED.sar.source, [], 'Dollar & Currency'),
+    item('gbp', 'British Pound', 'Rs', FX_SEED.gbp.price, FX_SEED.gbp.source, [371.19, 371.51], 'Dollar & Currency'),
+    item('eur', 'Euro', 'Rs', FX_SEED.eur.price, FX_SEED.eur.source, [309.79, 310.17], 'Dollar & Currency'),
   ]},
   { id: 'karyana', name: 'Karyana', items: [
-    item('atta', 'Atta', 'Rs / kg', null, 'PBS SPI (sample — rate aa raha hai)', [], 'Karyana'),
-    item('cheeni', 'Cheeni', 'Rs / kg', null, 'PBS SPI (sample — rate aa raha hai)', [], 'Karyana'),
-    item('ghee', 'Ghee', 'Rs / kg', null, 'Market (sample — rate aa raha hai)', [], 'Karyana'),
-    item('doodh', 'Doodh', 'Rs / litre', null, 'Market (sample — rate aa raha hai)', [], 'Karyana'),
-    item('anday', 'Anday', 'Rs / dozen', null, 'Market (sample — rate aa raha hai)', [], 'Karyana'),
-    item('chicken', 'Chicken', 'Rs / kg', null, 'Market (sample — rate aa raha hai)', [], 'Karyana'),
-    item('daal-masoor', 'Daal Masoor', 'Rs / kg', null, 'Market (sample — rate aa raha hai)', [], 'Karyana'),
-    item('daal-moong', 'Daal Moong', 'Rs / kg', null, 'Market (sample — rate aa raha hai)', [], 'Karyana'),
-    item('chawal', 'Chawal', 'Rs / kg', null, 'Market (sample — rate aa raha hai)', [], 'Karyana'),
+    item('atta', 'Atta', 'Rs / kg', null, 'PBS SPI weekly — no single verified rate in this file', [], 'Karyana'),
+    item('cheeni', 'Cheeni', 'Rs / kg', null, 'PBS SPI weekly — no single verified rate in this file', [], 'Karyana'),
+    item('ghee', 'Ghee', 'Rs / kg', null, 'Market — no single verified rate in this file', [], 'Karyana'),
+    item('doodh', 'Doodh', 'Rs / litre', null, 'Market — no single verified rate in this file', [], 'Karyana'),
+    item('anday', 'Anday', 'Rs / dozen', null, 'Market — no single verified rate in this file', [], 'Karyana'),
+    item('chicken', 'Chicken', 'Rs / kg', LAHORE_SEED.chicken.price, LAHORE_SEED.chicken.source, [], 'Karyana'),
+    item('daal-masoor', 'Daal Masoor', 'Rs / kg', null, 'Market — no single verified rate in this file', [], 'Karyana'),
+    item('daal-moong', 'Daal Moong', 'Rs / kg', null, 'Market — no single verified rate in this file', [], 'Karyana'),
+    item('chawal', 'Chawal', 'Rs / kg', null, 'Market — no single verified rate in this file', [], 'Karyana'),
   ]},
   { id: 'sabzi', name: 'Sabzi — Lahore Sarkari List', items: [
-    item('aloo', 'Aloo', 'Rs / kg', null, 'Lahore Market Committee (sample)', [], 'Sabzi'),
-    item('pyaz', 'Pyaz', 'Rs / kg', null, 'Lahore Market Committee (sample)', [], 'Sabzi'),
-    item('tamatar', 'Tamatar', 'Rs / kg', null, 'Lahore Market Committee (sample)', [], 'Sabzi'),
-    item('palak', 'Palak', 'Rs / kg', null, 'Lahore Market Committee (sample)', [], 'Sabzi'),
-    item('matar', 'Matar', 'Rs / kg', 330, 'Lahore Market Committee sheet (sample)', [300, 330], 'Sabzi'),
-    item('gajar', 'Gajar', 'Rs / kg', null, 'Lahore Market Committee (sample)', [], 'Sabzi'),
-    item('shalgam', 'Shalgam', 'Rs / kg', null, 'Lahore Market Committee (sample)', [], 'Sabzi'),
+    item('aloo', 'Aloo', 'Rs / kg', LAHORE_SEED.aloo.price, LAHORE_SEED.aloo.source, [], 'Sabzi'),
+    item('pyaz', 'Pyaz', 'Rs / kg', LAHORE_SEED.pyaz.price, LAHORE_SEED.pyaz.source, [], 'Sabzi'),
+    item('tamatar', 'Tamatar', 'Rs / kg', LAHORE_SEED.tamatar.price, LAHORE_SEED.tamatar.source, [], 'Sabzi'),
+    item('palak', 'Palak', 'Rs / kg', LAHORE_SEED.palak.price, LAHORE_SEED.palak.source, [], 'Sabzi'),
+    item('matar', 'Matar', 'Rs / kg', LAHORE_SEED.matar.price, LAHORE_SEED.matar.source, [300, 330], 'Sabzi'),
+    item('gajar', 'Gajar', 'Rs / kg', LAHORE_SEED.gajar.price, LAHORE_SEED.gajar.source, [], 'Sabzi'),
+    item('shalgam', 'Shalgam', 'Rs / kg', LAHORE_SEED.shalgam.price, LAHORE_SEED.shalgam.source, [], 'Sabzi'),
   ]},
   { id: 'phal', name: 'Phal — Lahore Sarkari List', items: [
-    item('seb', 'Seb', 'Rs / kg', null, 'Lahore Market Committee (sample)', [], 'Phal'),
-    item('kela', 'Kela', 'Rs / dozen', null, 'Lahore Market Committee (sample)', [], 'Phal'),
-    item('amrood', 'Amrood', 'Rs / kg', null, 'Lahore Market Committee (sample)', [], 'Phal'),
-    item('kinnow', 'Kinnow', 'Rs / kg', null, 'Lahore Market Committee (sample)', [], 'Phal'),
-    item('malta', 'Malta', 'Rs / kg', null, 'Lahore Market Committee (sample)', [], 'Phal'),
+    item('seb', 'Seb', 'Rs / kg', LAHORE_SEED.seb.price, LAHORE_SEED.seb.source, [], 'Phal'),
+    item('kela', 'Kela', 'Rs / dozen', LAHORE_SEED.kela.price, LAHORE_SEED.kela.source, [], 'Phal'),
+    item('amrood', 'Amrood', 'Rs / kg', LAHORE_SEED.amrood.price, LAHORE_SEED.amrood.source, [], 'Phal'),
+    item('kinnow', 'Kinnow', 'Rs / kg', LAHORE_SEED.kinnow.price, LAHORE_SEED.kinnow.source, [], 'Phal'),
+    item('malta', 'Malta', LAHORE_SEED.malta.unit ?? 'Rs / dozen', LAHORE_SEED.malta.price, LAHORE_SEED.malta.source, [], 'Phal'),
     // Ended / coming-soon items are kept in data so the seasonal
     // section can list them, but the main Phal list filters them out.
     item('aam', 'Aam', 'Rs / kg', null, 'Seasonal (ended)', [], 'Phal'),

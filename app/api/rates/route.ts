@@ -1,8 +1,24 @@
 import { NextResponse } from 'next/server';
 import { CATEGORIES } from '../../../lib/data';
+import { fetchLiveFx } from '../../../lib/real-rates';
 import { getSeason } from '../../../lib/season';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export async function GET() {
-  return NextResponse.json({ categories: CATEGORIES, season: getSeason(), lastRefresh: new Date().toISOString(), note: 'Sample rates labelled as sample until live refresh replaces them.' });
+  const fx = await fetchLiveFx();
+  let categories = CATEGORIES;
+  let fxNote = 'Currency seed: SBP closing 2 Nov 2026.';
+  if (fx) {
+    fxNote = fx.source;
+    categories = CATEGORIES.map((cat) => cat.id === 'currency'
+      ? { ...cat, items: cat.items.map((it) => fx.rates[it.id] !== undefined
+        ? { ...it, price: fx.rates[it.id], source: fx.source }
+        : it) }
+      : cat);
+  }
+  return NextResponse.json({
+    categories, season: getSeason(), lastRefresh: new Date().toISOString(),
+    fxNote,
+    note: 'Sourced, dated rates. A null price means no verified rate is available — it is shown as "Rate aa raha hai…" instead of an invented number. Rates By Exchange Rate API when live FX is used.',
+  });
 }

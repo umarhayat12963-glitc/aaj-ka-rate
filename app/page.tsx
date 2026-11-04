@@ -1,6 +1,6 @@
 'use client';
-import { useMemo, useState } from 'react';
-import { CATEGORIES, findItem } from '../lib/data';
+import { useEffect, useMemo, useState } from 'react';
+import { CATEGORIES as STATIC_CATEGORIES, findItem as staticFindItem, type Category } from '../lib/data';
 import { getSeason, seasonStatus } from '../lib/season';
 import EyeBuddy from '../components/EyeBuddy';
 import AdSlot from '../components/AdSlot';
@@ -18,6 +18,17 @@ const FAQS = [
 export default function Home() {
   const [q, setQ] = useState('');
   const [openId, setOpenId] = useState<string | null>(null);
+  const [liveCategories, setLiveCategories] = useState<Category[] | null>(null);
+  // Live rates (incl. live FX when the daily refresh fetched it)
+  // replace the static sourced seed when /api/rates answers.
+  // If it fails, the static sourced seed stays — never a blank page.
+  useEffect(() => {
+    fetch('/api/rates').then((r) => r.json()).then((j) => {
+      if (Array.isArray(j.categories) && j.categories.length) setLiveCategories(j.categories);
+    }).catch(() => {});
+  }, []);
+  const CATEGORIES = liveCategories ?? STATIC_CATEGORIES;
+  const findItem = (id: string) => CATEGORIES.flatMap((c) => c.items).find((i) => i.id === id) ?? staticFindItem(id);
   const season = useMemo(() => getSeason(), []);
   const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Karachi' });
   const query = q.trim().toLowerCase();
@@ -53,14 +64,14 @@ export default function Home() {
         <section>
           <h2>Taaruf — Aaj Ka Rate kya hai?</h2>
           <p>Aaj Ka Rate aam logon ke liye banaya gaya hai. Yahan rozana petrol, diesel, sona, chandi, dollar, karyana aur Lahore ki sarkari sabzi aur phal ke rate ek jagah milte hain. Rate asan Roman Urdu me, bare saaf haroof me hain, taake slow network par bhi jaldi khulen.</p>
-          <p className="small">Note: Sample rates clearly labelled hain. Live refresh ke baad sourced rates in ki jagah le lenge. Kisi rate par tap kar ke us ki history aur source dekhen.</p>
+          <p className="small">Note: Har rate ke sath source aur date hai — rate par tap kar ke dekhen. Jin rates ka koi verified source nahi mila, un par koi number invent nahi kiya gaya, wo “Rate aa raha hai…” dikhate hain.</p>
         </section>
 
         <AdSlot placement="top" label="Top" />
         <section className="hero" aria-label="Bare rates">
-          <div className="card"><h2>Petrol</h2><div className="price">{petrol?.price ? `Rs ${petrol.price}` : 'Rate aa raha hai…'}</div><div className="small">per litre · Sample rate</div></div>
-          <div className="card"><h2>Sona 24K</h2><div className="price">{sona?.price ? `Rs ${sona.price}` : 'Rate aa raha hai…'}</div><div className="small">per tola · Sarafa source se aaye ga</div></div>
-          <div className="card"><h2>Dollar</h2><div className="price">{dollar?.price ? `Rs ${dollar.price}` : 'Rate aa raha hai…'}</div><div className="small">Interbank · Sample — live se replace hoga</div></div>
+          <div className="card"><h2>Petrol</h2><div className="price">{petrol?.price ? `Rs ${petrol.price}` : 'Rate aa raha hai…'}</div><div className="small">per litre · OGRA</div></div>
+          <div className="card"><h2>Sona 24K</h2><div className="price">{sona?.price ? `Rs ${sona.price}` : 'Rate aa raha hai…'}</div><div className="small">per tola · APSGJA, 2 Nov 2026</div></div>
+          <div className="card"><h2>Dollar</h2><div className="price">{dollar?.price ? `Rs ${dollar.price}` : 'Rate aa raha hai…'}</div><div className="small">Interbank · SBP closing, 2 Nov 2026 (live FX se update hota hai)</div></div>
         </section>
         <AdSlot placement="hero" label="Bare rates ke neeche" />
 
@@ -122,7 +133,7 @@ export default function Home() {
         <h2>About Aaj Ka Rate</h2>
         <p>Aaj Ka Rate ka maqsad aam logon tak rozana rates asan aur saaf tareeqe se pohanchana hai.</p>
         <h3>Rate Categories</h3><p>Petrol &amp; Diesel, Sona &amp; Chandi, Dollar &amp; Currency, Karyana, Lahore Sabzi, Lahore Phal.</p>
-        <h3>Sources &amp; Disclaimer</h3><p>Sources: OGRA, State Bank / open market, Karachi Sarafa, PBS SPI, Lahore Market Committee. Rates sirf maloomat ke liye hain, khareedne se pehle market me tasdeeq kar len. Sample rates live refresh se replace ho jayenge.</p>
+        <h3>Sources &amp; Disclaimer</h3><p>Sources: OGRA, State Bank / Exchange Rate API (Rates By Exchange Rate API), APSGJA Sarafa, Lahore Market Committee / PAMRA. Rates sirf maloomat ke liye hain, khareedne se pehle market me tasdeeq kar len. Har rate ki date aur source us par tap kar ke dekhi ja sakti hai; pending rates par koi number invent nahi kiya jata.</p>
         <h3>Privacy Note</h3><p>Site aap ka personal data save nahi karti, siwaye admin login ke jo sirf owner ke liye hai. Ads lagne par Google / ad networks apni policy ke mutabiq cookies use kar sakte hain.</p>
         <h3>Contact Us · Rabta Karo</h3>
         <p>Owner: Zohaib Ali Jutt<br />Email: <a href="mailto:umarhayat12963@gmail.com">umarhayat12963@gmail.com</a></p>

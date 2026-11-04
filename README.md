@@ -11,8 +11,23 @@ Easy Roman Urdu guide. Ye project Muse artifact ka copy NAHI hai — ye spec se 
 - Admin panel (/admin, public NAHI): pehli dafa setup hi hai — KOI default username/password code ya docs me NAHI hai. Admin apna username/password khud banata hai, sirf hash save hota hai. Login me password show/hide toggle, panel ke andar change username/password (current password zaroori), logout, 7 din session. Forgot Password: login ke neeche link, sirf panel me set kiye hue 3 security sawal se kaam karta hai, jawab hash hote hain, ghalat jawab par saaf Roman Urdu error, koi 500 crash nahi. Purana direct owner-reset bypass HATA diya gaya hai.
 - Visual: light mesh golden-green background, thin golden line top, golden cursor (normal chhota golden arrow, clickable par sirf shahadat ungli wali golden hand, baqi mutthi), chhota Eye Buddy badge (44px mobile / 56px desktop, no bubble, pupils mouse ko follow karte hain, pointer-events none).
 
-## Sample rates — zaroori warning
-Is project me kuch rates CLEARLY SAMPLE labelled hain (jaise petrol Rs 377.91/L, diesel Rs 402.96). In ko verified current market rate samajh kar mat dikhayen. Live refresh route in ki jagah sourced data laye ga jab aap sources connect karenge.
+## Real rates v2 — sourced, dated, no invented numbers (2 Nov 2026)
+Sample label hata diya gaya hai. `lib/real-rates.ts` me har rate ki
+dated source hai: OGRA petrol/diesel windows (31 Oct–2 Nov:
+377.91/402.96; 3 Nov: 374.51/395.20 — 3 Nov ke baad petrol
+deliberately null, stale rate nahi dikhaya jata), SBP interbank
+closing 2 Nov (USD 276.72) + live FX via keyless open.er-api.com
+(mid-market, "Rates By Exchange Rate API", 1 hour cache),
+APSGJA sona 24K 412,136 / chandi 5,488 (2 Nov 2026),
+Lahore Market Committee / PAMRA 31 Oct 2026 sheet (Grade A:
+Aloo 50, Pyaz 195, Tamatar 170, Palak 40, Matar 330, Gajar 90,
+Shalgam 110, Kela 155/dozen, Malta 130/dozen; Kinnow ka sheet
+me entry nahi, is liye null). Karyana (PBS SPI) aur baqi phal
+abhi null hain — koi number invent nahi kiya gaya.
+`/api/refresh` ab stub nahi hai: OGRA window + live FX try karta
+hai, aur Supabase na hone par in-memory log rakhta hai.
+Persistence ke liye `lib/db.ts` + `DATABASE_URL` + `pg` chahiye,
+jo abhi Supabase project banne par hi kaam kare ga.
 
 ## Free deploy — step by step
 1. **GitHub:** Naya repo banayen, is folder ka code push karen. Kabhi `.env.local` ya real secrets push mat karen.
