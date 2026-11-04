@@ -2,9 +2,12 @@ import { NextResponse } from 'next/server';
 import { store, sessionFromCookie } from '../../../lib/store';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-export async function GET() {
-  const enabled = store().ads.filter((a) => a.enabled);
-  return NextResponse.json({ ads: enabled, placements: ['top', 'hero', 'middle', 'bottom'] });
+export async function GET(req: Request) {
+  const user = sessionFromCookie(req.headers.get('cookie'));
+  // Admin (logged in) sees all ads, including disabled ones, so they
+  // can be edited/deleted. Visitors see only enabled ads.
+  const ads = user ? store().ads : store().ads.filter((a) => a.enabled);
+  return NextResponse.json({ ads, placements: ['top', 'hero', 'middle', 'bottom'] });
 }
 export async function POST(req: Request) {
   const user = sessionFromCookie(req.headers.get('cookie'));
