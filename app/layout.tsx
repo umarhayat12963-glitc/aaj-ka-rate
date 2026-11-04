@@ -9,8 +9,19 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // AdSense site-verification code: the script is rendered on every
+  // page when NEXT_PUBLIC_ADSENSE_CLIENT_ID is set in Vercel env
+  // vars. The ID itself is never hard-coded in the repo; it comes
+  // only from the environment, and it becomes visible in page
+  // source by design (that is how AdSense verification works).
+  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
   return (
     <html lang="ur">
+      <head>
+        {adsenseClient ? (
+          <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`} crossOrigin="anonymous" />
+        ) : null}
+      </head>
       <body>{children}</body>
     </html>
   );
