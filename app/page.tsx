@@ -116,6 +116,19 @@ export default function Home() {
         ))}
         <AdSlot placement="bottom" label="Neeche" />
 
+        <section>
+          <h2>Articles — Mazeed Parhen</h2>
+          <p className="small">Petrol, dollar, sabzi, sona aur grocery bachat par asan Roman Urdu articles.</p>
+          <ul>
+            <li><a href="/articles/petrol-rate-kyun-badhta-ghatta-hai">Petrol ka rate kyun badhta ya ghatta hai?</a></li>
+            <li><a href="/articles/dollar-mehnga-hone-ka-asar">Dollar mehnga ho to aam aadmi par kya asar parta hai?</a></li>
+            <li><a href="/articles/lahore-sabzi-phal-rate-guide">Lahore me sabzi aur phal ka rate samajhne ki guide</a></li>
+            <li><a href="/articles/sona-khareedne-se-pehle">Sona khareedne se pehle kya dekhna chahiye?</a></li>
+            <li><a href="/articles/grocery-bachat-tareeqa">Grocery par bachat ka aasan tareeqa</a></li>
+          </ul>
+          <p><a href="/articles">Sab articles dekhen →</a></p>
+        </section>
+
         <section className="guide">
           <h2>Guide — Rate kaise samjhen</h2>
           <h3>Rate kaise parhen</h3><p>Har rate ke sath unit likha hai, jaise per litre ya per kg. Kal aur aaj ka farq dekh kar andaza lagayen ke cheez mehngi hui ya sasti.</p>
@@ -133,10 +146,10 @@ export default function Home() {
         <p>Aaj Ka Rate ka maqsad aam logon tak rozana rates asan aur saaf tareeqe se pohanchana hai.</p>
         <h3>Rate Categories</h3><p>Petrol &amp; Diesel, Sona &amp; Chandi, Dollar &amp; Currency, Karyana, Lahore Sabzi, Lahore Phal.</p>
         <h3>Sources &amp; Disclaimer</h3><p>Sources: OGRA, State Bank / Exchange Rate API (Rates By Exchange Rate API), APSGJA Sarafa, Lahore Market Committee / PAMRA. Rates sirf maloomat ke liye hain, khareedne se pehle market me tasdeeq kar len. Har rate ki date aur source us par tap kar ke dekhi ja sakti hai; pending rates par koi number invent nahi kiya jata.</p>
-        <h3>Privacy Note</h3><p>Site aap ka personal data save nahi karti, siwaye admin login ke jo sirf owner ke liye hai. Ads lagne par Google / ad networks apni policy ke mutabiq cookies use kar sakte hain.</p>
+        <h3>Privacy Note</h3><p>Site aap ka personal data save nahi karti, siwaye admin login ke jo sirf owner ke liye hai. Ads lagne par Google / ad networks apni policy ke mutabiq cookies use kar sakte hain. Poori tafseel ke liye <a href="/privacy">Privacy Policy</a> parhen.</p>
         <h3>Contact Us · Rabta Karo</h3>
         <p>Owner: Zohaib Ali Jutt<br />Email: <a href="mailto:umarhayat12963@gmail.com">umarhayat12963@gmail.com</a></p>
-        <p><a href="/admin">Ads Admin Panel</a></p>
+        <p><a href="/articles">Articles</a> · <a href="/privacy">Privacy Policy</a> · <a href="/admin">Ads Admin Panel</a></p>
         <p>© 2026 Aaj Ka Rate · Zohaib Ali Jutt — All Rights Reserved<br />Owner: Zohaib Ali Jutt · Email: <a href="mailto:umarhayat12963@gmail.com">umarhayat12963@gmail.com</a></p>
       </footer>
     </>
