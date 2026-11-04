@@ -25,11 +25,11 @@ export function getSeason(date = new Date()): Season {
       newItems: ['kinnow', 'matar', 'malta', 'gajar', 'shalgam'],
       inSeasonItems: ['palak'],
       comingSoonItems: ['strawberry'],
-      endedItems: ['aam', 'angoor'],
+      endedItems: ['aam', 'angoor', 'tarbooz', 'kharbooza'],
     };
   }
   if (month === 12 || month === 1 || month === 2) {
-    return { seasonName: 'Sardi ka Mosam', monthLabel, newItems: ['strawberry'], inSeasonItems: ['kinnow', 'malta', 'gajar', 'shalgam', 'palak'], comingSoonItems: [], endedItems: ['aam', 'angoor'] };
+    return { seasonName: 'Sardi ka Mosam', monthLabel, newItems: ['strawberry'], inSeasonItems: ['kinnow', 'malta', 'gajar', 'shalgam', 'palak'], comingSoonItems: [], endedItems: ['aam', 'angoor', 'tarbooz', 'kharbooza'] };
   }
   if (month >= 3 && month <= 5) {
     return { seasonName: 'Bahar ka Mosam', monthLabel, newItems: ['tarbooz', 'kharbooza'], inSeasonItems: ['aloo', 'pyaz', 'tamatar'], comingSoonItems: ['aam'], endedItems: ['kinnow', 'matar'] };

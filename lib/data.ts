@@ -9,6 +9,7 @@ export type RateItem = {
   isSample: boolean;
   history: number[];
   category: string;
+  displayPrice?: string;
 };
 
 export type Category = { id: string; name: string; items: RateItem[] };
@@ -18,8 +19,8 @@ export type Category = { id: string; name: string; items: RateItem[] };
 // is available for that item; the page shows "Rate aa raha hai…"
 // instead of inventing a number. isSample is false throughout:
 // nothing in this file is presented as sample data any more.
-function item(id: string, name: string, unit: string, price: number | null, source: string, history: number[], category: string): RateItem {
-  return { id, name, unit, price, source, history, category, isSample: false };
+function item(id: string, name: string, unit: string, price: number | null, source: string, history: number[], category: string, displayPrice?: string): RateItem {
+  return { id, name, unit, price, source, history, category, isSample: false, displayPrice };
 }
 
 const today = pktDateString();
@@ -63,7 +64,7 @@ export const CATEGORIES: Category[] = [
     item('shalgam', 'Shalgam', 'Rs / kg', LAHORE_SEED.shalgam.price, LAHORE_SEED.shalgam.source, [], 'Sabzi'),
   ]},
   { id: 'phal', name: 'Phal — Lahore Sarkari List', items: [
-    item('seb', 'Seb', 'Rs / kg', LAHORE_SEED.seb.price, LAHORE_SEED.seb.source, [], 'Phal'),
+    item('seb', 'Seb', 'Rs / kg', LAHORE_SEED.seb.price, LAHORE_SEED.seb.source, [], 'Phal', 'Rs 210–405 / kg'),
     item('kela', 'Kela', 'Rs / dozen', LAHORE_SEED.kela.price, LAHORE_SEED.kela.source, [], 'Phal'),
     item('amrood', 'Amrood', 'Rs / kg', LAHORE_SEED.amrood.price, LAHORE_SEED.amrood.source, [], 'Phal'),
     item('kinnow', 'Kinnow', 'Rs / kg', LAHORE_SEED.kinnow.price, LAHORE_SEED.kinnow.source, [], 'Phal'),

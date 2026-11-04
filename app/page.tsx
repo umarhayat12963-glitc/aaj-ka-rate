@@ -2,7 +2,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { CATEGORIES as STATIC_CATEGORIES, findItem as staticFindItem, type Category } from '../lib/data';
 import { getSeason, seasonStatus } from '../lib/season';
-import EyeBuddy from '../components/EyeBuddy';
 import AdSlot from '../components/AdSlot';
 
 const FAQS = [
@@ -50,7 +49,7 @@ export default function Home() {
   }).filter((c) => c.items.length > 0);
 
   const seasonalList = (ids: string[]) => ids.map((id) => findItem(id)).filter(Boolean) as NonNullable<ReturnType<typeof findItem>>[];
-  const priceText = (price: number | null, unit: string) => price === null ? 'Rate aa raha hai…' : `Rs ${price.toLocaleString()} ${unit.replace('Rs / ', '/ ').replace('Rs', '')}`;
+  const priceText = (price: number | null, unit: string, displayPrice?: string) => displayPrice ? displayPrice : (price === null ? 'Rate aa raha hai…' : `Rs ${price.toLocaleString()} ${unit.replace('Rs / ', '/ ').replace('Rs', '')}`);
 
   return (
     <>
@@ -98,7 +97,7 @@ export default function Home() {
               return (
                 <div key={it.id}>
                   <button className="rowbtn" onClick={() => setOpenId(openId === it.id ? null : it.id)}>
-                    <strong>{it.name}</strong> — {ended ? 'Mosam Khatam' : priceText(it.price, it.unit)}
+                    <strong>{it.name}</strong> — {ended ? 'Mosam Khatam' : priceText(it.price, it.unit, it.displayPrice)}
                     {s === 'new' && <span className="badge"> 🌟 NAYA</span>}
                     {it.isSample && <span className="small"> · Sample</span>}
                   </button>
@@ -140,7 +139,6 @@ export default function Home() {
         <p><a href="/admin">Ads Admin Panel</a></p>
         <p>© 2026 Aaj Ka Rate · Zohaib Ali Jutt — All Rights Reserved<br />Owner: Zohaib Ali Jutt · Email: <a href="mailto:umarhayat12963@gmail.com">umarhayat12963@gmail.com</a></p>
       </footer>
-      <EyeBuddy />
     </>
   );
 }
