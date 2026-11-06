@@ -63,14 +63,14 @@ export default function Home() {
         <section>
           <h2>Taaruf — Aaj Ka Rate kya hai?</h2>
           <p>Aaj Ka Rate aam logon ke liye banaya gaya hai. Yahan rozana petrol, diesel, sona, chandi, dollar, karyana aur Lahore ki sarkari sabzi aur phal ke rate ek jagah milte hain. Rate asan Roman Urdu me, bare saaf haroof me hain, taake slow network par bhi jaldi khulen.</p>
-          <p className="small">Note: Har rate ke sath source aur date hai — rate par tap kar ke dekhen. Jin rates ka koi verified source nahi mila, un par koi number invent nahi kiya gaya, wo “Rate aa raha hai…” dikhate hain.</p>
+          <p className="small">Note: Har rate ke samne us ki date likhi hai, taake pata rahe ke rate kis din ka hai. Source aur history dekhne ke liye rate par tap karen. Jin rates ka koi verified source nahi mila, un par koi number invent nahi kiya gaya, wo “Rate aa raha hai…” dikhate hain.</p>
         </section>
 
         <AdSlot placement="top" label="Top" />
         <section className="hero" aria-label="Bare rates">
-          <div className="card"><h2>Petrol</h2><div className="price">{petrol?.price ? `Rs ${petrol.price}` : 'Rate aa raha hai…'}</div><div className="small">per litre · OGRA</div></div>
-          <div className="card"><h2>Sona 24K</h2><div className="price">{sona?.price ? `Rs ${sona.price}` : 'Rate aa raha hai…'}</div><div className="small">per tola · APSGJA, 2 Nov 2026</div></div>
-          <div className="card"><h2>Dollar</h2><div className="price">{dollar?.price ? `Rs ${dollar.price}` : 'Rate aa raha hai…'}</div><div className="small">Interbank · SBP closing, 2 Nov 2026 (live FX se update hota hai)</div></div>
+          <div className="card"><h2>Petrol</h2><div className="price">{petrol?.price ? `Rs ${petrol.price}` : 'Rate aa raha hai…'}</div><div className="small">per litre · OGRA{petrol?.date ? ` · ${petrol.date}` : ''}</div></div>
+          <div className="card"><h2>Sona 24K</h2><div className="price">{sona?.price ? `Rs ${sona.price}` : 'Rate aa raha hai…'}</div><div className="small">per tola · APSGJA{sona?.date ? `, ${sona.date}` : ', 2 Nov 2026'}</div></div>
+          <div className="card"><h2>Dollar</h2><div className="price">{dollar?.price ? `Rs ${dollar.price}` : 'Rate aa raha hai…'}</div><div className="small">Interbank{dollar?.date ? ` · ${dollar.date}` : ' · SBP closing, 2 Nov 2026'} (live FX se update hota hai)</div></div>
         </section>
         <AdSlot placement="hero" label="Bare rates ke neeche" />
 
@@ -78,7 +78,7 @@ export default function Home() {
           <h2>🌤️ Mosam ke Hisaab se Bazaar — {season.seasonName}</h2>
           <p><span className="badge">🌟 NAYA — Mosam ki Nayi Cheez</span></p>
           <h3>Nayi aayi hui cheezein</h3>
-          <ul>{seasonalList(season.newItems).map((i) => <li key={i.id}>{i.name} — {i.price === null ? 'Rate aa raha hai…' : `Rs ${i.price} / ${i.unit.replace('Rs / ', '')}`} <span className="badge">NAYA</span></li>)}</ul>
+          <ul>{seasonalList(season.newItems).map((i) => <li key={i.id}>{i.name} — {i.price === null ? 'Rate aa raha hai…' : `Rs ${i.price} / ${i.unit.replace('Rs / ', '')}`}{i.date ? ` · ${i.date}` : ''} <span className="badge">NAYA</span></li>)}</ul>
           <h3>Mousam me</h3>
           <ul>{seasonalList(season.inSeasonItems).map((i) => <li key={i.id}>{i.name}</li>)}</ul>
           <h3>Jald Ane Wala</h3>
@@ -98,6 +98,7 @@ export default function Home() {
                 <div key={it.id}>
                   <button className="rowbtn" onClick={() => setOpenId(openId === it.id ? null : it.id)}>
                     <strong>{it.name}</strong> — {ended ? 'Mosam Khatam' : priceText(it.price, it.unit, it.displayPrice)}
+                    {!ended && it.price !== null && it.date && <span className="ratedate"> · {it.date}</span>}
                     {s === 'new' && <span className="badge"> 🌟 NAYA</span>}
                     {it.isSample && <span className="small"> · Sample</span>}
                   </button>
@@ -145,7 +146,7 @@ export default function Home() {
         <h2>About Aaj Ka Rate</h2>
         <p>Aaj Ka Rate ka maqsad aam logon tak rozana rates asan aur saaf tareeqe se pohanchana hai.</p>
         <h3>Rate Categories</h3><p>Petrol &amp; Diesel, Sona &amp; Chandi, Dollar &amp; Currency, Karyana, Lahore Sabzi, Lahore Phal.</p>
-        <h3>Sources &amp; Disclaimer</h3><p>Sources: OGRA, State Bank / Exchange Rate API (Rates By Exchange Rate API), APSGJA Sarafa, Lahore Market Committee / PAMRA. Rates sirf maloomat ke liye hain, khareedne se pehle market me tasdeeq kar len. Har rate ki date aur source us par tap kar ke dekhi ja sakti hai; pending rates par koi number invent nahi kiya jata.</p>
+        <h3>Sources &amp; Disclaimer</h3><p>Sources: OGRA, State Bank / Exchange Rate API (Rates By Exchange Rate API), APSGJA Sarafa, Lahore Market Committee / PAMRA. Rates sirf maloomat ke liye hain, khareedne se pehle market me tasdeeq kar len. Har rate ki date us ke samne likhi hai; source rate par tap kar ke dekha ja sakta hai; pending rates par koi number invent nahi kiya jata.</p>
         <h3>Privacy Note</h3><p>Site aap ka personal data save nahi karti, siwaye admin login ke jo sirf owner ke liye hai. Ads lagne par Google / ad networks apni policy ke mutabiq cookies use kar sakte hain. Poori tafseel ke liye <a href="/privacy">Privacy Policy</a> parhen.</p>
         <h3>Contact Us · Rabta Karo</h3>
         <p>Owner: Zohaib Ali Jutt<br />Email: <a href="mailto:umarhayat12963@gmail.com">umarhayat12963@gmail.com</a></p>

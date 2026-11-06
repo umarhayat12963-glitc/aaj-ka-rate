@@ -20,6 +20,7 @@ header,main,footer{max-width:900px;margin:0 auto;padding:0 16px}
 .card h2{margin:0 0 4px;font-size:18px}
 .price{font-size:32px;font-weight:800;line-height:1.1}
 .small{font-size:15px;color:#b8c4bb}
+.ratedate{font-size:16px;font-weight:700;color:#e8c766}
 .badge{display:inline-block;background:#e8c766;color:#14201a;border:1px solid var(--gold);border-radius:999px;padding:2px 10px;font-size:14px;font-weight:700}
 .badge.ended{background:#2a2f2b;color:#e5e7eb;border-color:#6b7280}
 input,select,button{font-size:18px;padding:12px;border-radius:12px;border:1px solid #2e4a3a;background:#1a261f;color:var(--text)}

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { CATEGORIES } from '../../../lib/data';
-import { fetchLiveFx } from '../../../lib/real-rates';
+import { fetchLiveFx, formatPktDate } from '../../../lib/real-rates';
 import { getSeason } from '../../../lib/season';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -10,9 +10,12 @@ export async function GET() {
   let fxNote = 'Currency seed: SBP closing 2 Nov 2026.';
   if (fx) {
     fxNote = fx.source;
+    // Live FX price is today's fetch, so its visible date is the
+    // fetch date — not the 2 Nov seed date.
+    const fxDate = formatPktDate(fx.fetchedDate);
     categories = CATEGORIES.map((cat) => cat.id === 'currency'
       ? { ...cat, items: cat.items.map((it) => fx.rates[it.id] !== undefined
-        ? { ...it, price: fx.rates[it.id], source: fx.source }
+        ? { ...it, price: fx.rates[it.id], source: fx.source, date: fxDate }
         : it) }
       : cat);
   }

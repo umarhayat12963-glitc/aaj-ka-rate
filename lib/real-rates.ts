@@ -64,7 +64,17 @@ export type SourcedPrice = {
   price: number | null;
   source: string;
   isSample: false;
+  // Short readable date shown right next to the rate, e.g. "6 Nov 2026".
+  date?: string;
 };
+
+export function formatPktDate(iso: string): string {
+  // '2026-11-06' -> '6 Nov 2026'.
+  const [y, m, d] = iso.split('-').map(Number);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  if (!y || !m || !d || !months[m - 1]) return iso;
+  return `${d} ${months[m - 1]} ${y}`;
+}
 
 export function pktDateString(d = new Date()): string {
   // YYYY-MM-DD in Asia/Karachi.
@@ -99,8 +109,8 @@ export function petrolForDate(dateStr: string): { petrol: SourcedPrice; diesel: 
   const w = PETROL_WINDOWS.find((x) => dateStr >= x.from && dateStr <= x.to);
   if (w) {
     return {
-      petrol: { price: w.petrol, source: w.source, isSample: false },
-      diesel: { price: w.diesel, source: w.source, isSample: false },
+      petrol: { price: w.petrol, source: w.source, isSample: false, date: formatPktDate(w.to) },
+      diesel: { price: w.diesel, source: w.source, isSample: false, date: formatPktDate(w.to) },
     };
   }
   // Owner's rule (2026-11-06): a rate we already have must always
@@ -118,8 +128,8 @@ export function petrolForDate(dateStr: string): { petrol: SourcedPrice; diesel: 
   }
   const lastSource = `${past.source} — aaj ka naya OGRA rate abhi nahi aaya; ye aakhri verified rate hai (effective ${past.to})`;
   return {
-    petrol: { price: past.petrol, source: lastSource, isSample: false },
-    diesel: { price: past.diesel, source: lastSource, isSample: false },
+    petrol: { price: past.petrol, source: lastSource, isSample: false, date: formatPktDate(past.to) },
+    diesel: { price: past.diesel, source: lastSource, isSample: false, date: formatPktDate(past.to) },
   };
 }
 
@@ -195,10 +205,10 @@ export function normalizeLahoreName(raw: string): string {
 type FxCache = { at: number; rates: Record<string, number>; fetchedDate: string };
 const g = globalThis as unknown as { __aajFxCache?: FxCache };
 
-export async function fetchLiveFx(): Promise<{ rates: Record<string, number>; source: string } | null> {
+export async function fetchLiveFx(): Promise<{ rates: Record<string, number>; source: string; fetchedDate: string } | null> {
   const now = Date.now();
   if (g.__aajFxCache && now - g.__aajFxCache.at < 3600_000) {
-    return { rates: g.__aajFxCache.rates, source: `Exchange Rate API (open.er-api.com), mid-market, fetched ${g.__aajFxCache.fetchedDate} — Rates By Exchange Rate API` };
+    return { rates: g.__aajFxCache.rates, source: `Exchange Rate API (open.er-api.com), mid-market, fetched ${g.__aajFxCache.fetchedDate} — Rates By Exchange Rate API`, fetchedDate: g.__aajFxCache.fetchedDate };
   }
   try {
     const ctrl = new AbortController();
@@ -219,7 +229,7 @@ export async function fetchLiveFx(): Promise<{ rates: Record<string, number>; so
     };
     const fetchedDate = pktDateString();
     g.__aajFxCache = { at: now, rates, fetchedDate };
-    return { rates, source: `Exchange Rate API (open.er-api.com), mid-market, fetched ${fetchedDate} — Rates By Exchange Rate API` };
+    return { rates, source: `Exchange Rate API (open.er-api.com), mid-market, fetched ${fetchedDate} — Rates By Exchange Rate API`, fetchedDate };
   } catch {
     return null;
   }
