@@ -45,6 +45,17 @@
 //   sheet gives a range, the source string gives the range and
 //   the shown price is the Grade A upper value. Kinnow has no
 //   entry in the 30 Oct fruit sheet, so it stays null.
+// - Karyana: PBS Sensitive Price Indicator (SPI), week ended
+//   29 Oct 2026 (national average across 17 urban centres).
+//   Sugar 141.12/kg, Milk Fresh 219.98/litre, Ghee 1kg pouch
+//   618.19, Eggs 254.51/dozen, Masoor 267.31/kg, Moong 355.10/kg,
+//   Rice Basmati Broken 215.20/kg. Atta is derived per kg from
+//   the SPI Wheat Flour Bag 20 Kg (2951.46/20 = 147.57) and is
+//   labelled derived.
+// - Owner's rule (2026-11-06, for ALL items): a rate we already
+//   have must always stay visible with its date, even when no
+//   new rate has arrived yet. Only an item with no verified rate
+//   ever found (Kinnow, Amrood) stays "Rate aa raha hai…".
 //   Variant names in the sheet are normalised by
 //   normalizeLahoreName() — e.g. Shaljam -> Shalgam,
 //   Palak Farmi -> Palak, Gajar Chaina -> Gajar (variant note).
@@ -86,15 +97,29 @@ const PETROL_WINDOWS: {
 
 export function petrolForDate(dateStr: string): { petrol: SourcedPrice; diesel: SourcedPrice } {
   const w = PETROL_WINDOWS.find((x) => dateStr >= x.from && dateStr <= x.to);
-  if (!w) {
+  if (w) {
+    return {
+      petrol: { price: w.petrol, source: w.source, isSample: false },
+      diesel: { price: w.diesel, source: w.source, isSample: false },
+    };
+  }
+  // Owner's rule (2026-11-06): a rate we already have must always
+  // stay visible, even when today's new OGRA notification has not
+  // arrived yet. Show the most recent past window's rate, clearly
+  // labelled with its date, so visitors can see it is the last
+  // verified rate and not today's new rate. Only when no past
+  // window exists at all does the price stay null.
+  const past = PETROL_WINDOWS.filter((x) => x.to < dateStr).sort((a, b) => (a.to < b.to ? 1 : -1))[0];
+  if (!past) {
     return {
       petrol: { price: null, source: 'OGRA daily notification pending — stale rate not shown', isSample: false },
       diesel: { price: null, source: 'OGRA daily notification pending — stale rate not shown', isSample: false },
     };
   }
+  const lastSource = `${past.source} — aaj ka naya OGRA rate abhi nahi aaya; ye aakhri verified rate hai (effective ${past.to})`;
   return {
-    petrol: { price: w.petrol, source: w.source, isSample: false },
-    diesel: { price: w.diesel, source: w.source, isSample: false },
+    petrol: { price: past.petrol, source: lastSource, isSample: false },
+    diesel: { price: past.diesel, source: lastSource, isSample: false },
   };
 }
 
@@ -129,6 +154,20 @@ export const LAHORE_SEED: Record<string, { price: number | null; source: string;
   // Karyana: one verified official item only. The rest stay null
   // rather than inventing PBS/market figures.
   chicken: { price: 541, source: 'Lahore official chicken meat rate, 2 Nov 2026 market survey (Profit) — retail often higher' },
+};
+
+// ---- Karyana: PBS SPI week ended 29 Oct 2026 ----
+// National average across 17 urban centres. Atta is derived per kg
+// from the SPI 20 Kg bag price (2951.46/20 = 147.57) and labelled so.
+export const KARYANA_SEED: Record<string, { price: number; source: string }> = {
+  atta: { price: 147.57, source: 'PBS SPI week ended 29 Oct 2026 — Wheat Flour Bag 20 Kg Rs 2951.46, per kg derived (2951.46/20)' },
+  cheeni: { price: 141.12, source: 'PBS SPI week ended 29 Oct 2026 — Sugar Refined 1 Kg (national average, 17 urban centres)' },
+  ghee: { price: 618.19, source: 'PBS SPI week ended 29 Oct 2026 — Vegetable Ghee 1 kg Pouch (national average, 17 urban centres)' },
+  doodh: { price: 219.98, source: 'PBS SPI week ended 29 Oct 2026 — Milk Fresh 1 Ltr (national average, 17 urban centres)' },
+  anday: { price: 254.51, source: 'PBS SPI week ended 29 Oct 2026 — Eggs Hen Farm 1 Dozen (national average, 17 urban centres)' },
+  daalMasoor: { price: 267.31, source: 'PBS SPI week ended 29 Oct 2026 — Pulse Masoor (Washed) 1 Kg (national average, 17 urban centres)' },
+  daalMoong: { price: 355.10, source: 'PBS SPI week ended 29 Oct 2026 — Pulse Moong (Washed) 1 Kg (national average, 17 urban centres)' },
+  chawal: { price: 215.20, source: 'PBS SPI week ended 29 Oct 2026 — Rice Basmati Broken (Average Quality) 1 Kg (national average, 17 urban centres)' },
 };
 
 // ---- Lahore variant-name normalisation ----

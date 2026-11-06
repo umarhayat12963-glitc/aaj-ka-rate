@@ -1,4 +1,4 @@
-import { petrolForDate, pktDateString, FX_SEED, GOLD_SEED, LAHORE_SEED } from './real-rates';
+import { petrolForDate, pktDateString, FX_SEED, GOLD_SEED, LAHORE_SEED, KARYANA_SEED } from './real-rates';
 
 export type RateItem = {
   id: string;
@@ -44,15 +44,15 @@ export const CATEGORIES: Category[] = [
     item('eur', 'Euro', 'Rs', FX_SEED.eur.price, FX_SEED.eur.source, [309.79, 310.17], 'Dollar & Currency'),
   ]},
   { id: 'karyana', name: 'Karyana', items: [
-    item('atta', 'Atta', 'Rs / kg', null, 'PBS SPI weekly — no single verified rate in this file', [], 'Karyana'),
-    item('cheeni', 'Cheeni', 'Rs / kg', null, 'PBS SPI weekly — no single verified rate in this file', [], 'Karyana'),
-    item('ghee', 'Ghee', 'Rs / kg', null, 'Market — no single verified rate in this file', [], 'Karyana'),
-    item('doodh', 'Doodh', 'Rs / litre', null, 'Market — no single verified rate in this file', [], 'Karyana'),
-    item('anday', 'Anday', 'Rs / dozen', null, 'Market — no single verified rate in this file', [], 'Karyana'),
+    item('atta', 'Atta', 'Rs / kg', KARYANA_SEED.atta.price, KARYANA_SEED.atta.source, [], 'Karyana'),
+    item('cheeni', 'Cheeni', 'Rs / kg', KARYANA_SEED.cheeni.price, KARYANA_SEED.cheeni.source, [], 'Karyana'),
+    item('ghee', 'Ghee', 'Rs / kg', KARYANA_SEED.ghee.price, KARYANA_SEED.ghee.source, [], 'Karyana'),
+    item('doodh', 'Doodh', 'Rs / litre', KARYANA_SEED.doodh.price, KARYANA_SEED.doodh.source, [], 'Karyana'),
+    item('anday', 'Anday', 'Rs / dozen', KARYANA_SEED.anday.price, KARYANA_SEED.anday.source, [], 'Karyana'),
     item('chicken', 'Chicken', 'Rs / kg', LAHORE_SEED.chicken.price, LAHORE_SEED.chicken.source, [], 'Karyana'),
-    item('daal-masoor', 'Daal Masoor', 'Rs / kg', null, 'Market — no single verified rate in this file', [], 'Karyana'),
-    item('daal-moong', 'Daal Moong', 'Rs / kg', null, 'Market — no single verified rate in this file', [], 'Karyana'),
-    item('chawal', 'Chawal', 'Rs / kg', null, 'Market — no single verified rate in this file', [], 'Karyana'),
+    item('daal-masoor', 'Daal Masoor', 'Rs / kg', KARYANA_SEED.daalMasoor.price, KARYANA_SEED.daalMasoor.source, [], 'Karyana'),
+    item('daal-moong', 'Daal Moong', 'Rs / kg', KARYANA_SEED.daalMoong.price, KARYANA_SEED.daalMoong.source, [], 'Karyana'),
+    item('chawal', 'Chawal', 'Rs / kg', KARYANA_SEED.chawal.price, KARYANA_SEED.chawal.source, [], 'Karyana'),
   ]},
   { id: 'sabzi', name: 'Sabzi — Lahore Sarkari List', items: [
     item('aloo', 'Aloo', 'Rs / kg', LAHORE_SEED.aloo.price, LAHORE_SEED.aloo.source, [], 'Sabzi'),
