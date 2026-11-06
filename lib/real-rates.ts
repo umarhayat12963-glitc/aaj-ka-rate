@@ -14,8 +14,15 @@
 //   petrol Rs 369.06 (down Rs 5.45), diesel Rs 391.52 (down Rs 3.68)
 //   (The Global Times / Reflecto News, reporting the OGRA press
 //   release; BasiraSoft pump-price page lists the same pair).
+//   OGRA notification announced 5 Nov 2026, effective 6 Nov 2026:
+//   petrol Rs 352.59 (down Rs 9.41 from Rs 362.00), diesel
+//   Rs 382.25 (down Rs 5.56 from Rs 387.81) — fourth consecutive
+//   daily cut (Dawn, Arab News, Geo, Business Recorder, all
+//   reporting the same OGRA release). The 5 Nov window
+//   (362.00 / 387.81) was missed and is deliberately NOT
+//   backfilled as a live rate.
 //   Under the daily framework each window is one day only, so
-//   after 4 Nov petrol deliberately becomes null again instead
+//   after 6 Nov petrol deliberately becomes null again instead
 //   of showing a stale rate.
 // - Dollar/currency: SBP interbank closing 2 Nov 2026 (Business
 //   Recorder / UrduPoint / ProPakistani, all Rs 276.72 for USD).
@@ -70,6 +77,10 @@ const PETROL_WINDOWS: {
   {
     from: '2026-11-04', to: '2026-11-04', petrol: 369.06, diesel: 391.52,
     source: 'OGRA notification announced 3 Nov 2026, effective 4 Nov 2026',
+  },
+  {
+    from: '2026-11-06', to: '2026-11-06', petrol: 352.59, diesel: 382.25,
+    source: 'OGRA notification announced 5 Nov 2026, effective 6 Nov 2026',
   },
 ];
 
