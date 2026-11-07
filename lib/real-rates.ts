@@ -21,9 +21,17 @@
 //   reporting the same OGRA release). The 5 Nov window
 //   (362.00 / 387.81) was missed and is deliberately NOT
 //   backfilled as a live rate.
+//   OGRA notification announced 6 Nov 2026, effective 7 Nov 2026:
+//   petrol Rs 346 (down Rs 6.59 from Rs 352.59), diesel
+//   Rs 378 (down Rs 4.25 from Rs 382.25) — fifth consecutive
+//   daily cut (PakObserver, Bloom Pakistan, Dawn via Khabar24x12,
+//   Business Recorder via EIN News, all reporting the same OGRA
+//   release). Some reports say the rates run until 9 or 10 Nov
+//   (public holiday 9 Nov); the window is still added as one day
+//   only, per the daily framework.
 //   Under the daily framework each window is one day only, so
-//   after 6 Nov petrol deliberately becomes null again instead
-//   of showing a stale rate.
+//   after its day the fallback shows the last verified rate,
+//   dated, instead of a stale rate presented as today's.
 // - Dollar/currency: SBP interbank closing 2 Nov 2026 (Business
 //   Recorder / UrduPoint / ProPakistani, all Rs 276.72 for USD).
 //   Live FX after that comes from the keyless open.er-api.com
@@ -102,6 +110,10 @@ const PETROL_WINDOWS: {
   {
     from: '2026-11-06', to: '2026-11-06', petrol: 352.59, diesel: 382.25,
     source: 'OGRA notification announced 5 Nov 2026, effective 6 Nov 2026',
+  },
+  {
+    from: '2026-11-07', to: '2026-11-07', petrol: 346, diesel: 378,
+    source: 'OGRA notification announced 6 Nov 2026, effective 7 Nov 2026',
   },
 ];
 
