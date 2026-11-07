@@ -150,7 +150,7 @@ export default function Home() {
         <h3>Privacy Note</h3><p>Site aap ka personal data save nahi karti, siwaye admin login ke jo sirf owner ke liye hai. Ads lagne par Google / ad networks apni policy ke mutabiq cookies use kar sakte hain. Poori tafseel ke liye <a href="/privacy">Privacy Policy</a> parhen.</p>
         <h3>Contact Us · Rabta Karo</h3>
         <p>Owner: Zohaib Ali Jutt<br />Email: <a href="mailto:umarhayat12963@gmail.com">umarhayat12963@gmail.com</a></p>
-        <p><a href="/articles">Articles</a> · <a href="/privacy">Privacy Policy</a> · <a href="/admin">Ads Admin Panel</a></p>
+        <p><a href="/articles">Articles</a> · <a href="/about">About Us</a> · <a href="/contact">Contact Us</a> · <a href="/privacy">Privacy Policy</a> · <a href="/admin">Ads Admin Panel</a></p>
         <p>© 2026 Aaj Ka Rate · Zohaib Ali Jutt — All Rights Reserved<br />Owner: Zohaib Ali Jutt · Email: <a href="mailto:umarhayat12963@gmail.com">umarhayat12963@gmail.com</a></p>
       </footer>
     </>

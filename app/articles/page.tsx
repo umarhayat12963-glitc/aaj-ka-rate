@@ -24,7 +24,7 @@ export default function ArticlesPage() {
         ))}
       </main>
       <footer>
-        <p><a href="/">Aaj Ka Rate</a> · <a href="/privacy">Privacy Policy</a> · <a href="/admin">Ads Admin Panel</a></p>
+        <p><a href="/">Aaj Ka Rate</a> · <a href="/about">About Us</a> · <a href="/contact">Contact Us</a> · <a href="/privacy">Privacy Policy</a> · <a href="/admin">Ads Admin Panel</a></p>
         <p>© 2026 Aaj Ka Rate · Zohaib Ali Jutt — All Rights Reserved</p>
       </footer>
     </>
