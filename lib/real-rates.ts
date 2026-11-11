@@ -29,6 +29,12 @@
 //   release). Some reports say the rates run until 9 or 10 Nov
 //   (public holiday 9 Nov); the window is still added as one day
 //   only, per the daily framework.
+//   OGRA notification announced 10 Nov 2026, effective 11 Nov 2026:
+//   petrol Rs 338 (down Rs 8 from Rs 346), diesel
+//   Rs 371 (down Rs 7 from Rs 378) — sixth consecutive
+//   daily cut (Mettis Global, The News, Daily Imroz /
+//   Petroleum Division, oilprices.pk, all reporting the
+//   same OGRA release; previous window ran till 10 Nov).
 //   Under the daily framework each window is one day only, so
 //   after its day the fallback shows the last verified rate,
 //   dated, instead of a stale rate presented as today's.
@@ -114,6 +120,10 @@ const PETROL_WINDOWS: {
   {
     from: '2026-11-07', to: '2026-11-07', petrol: 346, diesel: 378,
     source: 'OGRA notification announced 6 Nov 2026, effective 7 Nov 2026',
+  },
+  {
+    from: '2026-11-11', to: '2026-11-11', petrol: 338, diesel: 371,
+    source: 'OGRA notification announced 10 Nov 2026, effective 11 Nov 2026',
   },
 ];
 
