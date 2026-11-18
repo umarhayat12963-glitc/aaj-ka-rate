@@ -54,7 +54,7 @@ export default function Home() {
   return (
     <>
       <header>
-        <h1>Aaj Ka Rate</h1>
+        <h1 className="sitetitle"><img src="/zohaib.jpg" alt="Zohaib Ali Jutt" className="title-photo" />Aaj Ka Rate</h1>
         <p className="small">{today} · Pakistan · {season.seasonName} · {season.monthLabel}</p>
         <p><a href="/admin">🔐 Ads Admin Panel</a></p>
         <label>Search: <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Petrol, atta, tamatar, dollar…" aria-label="Rate search" /></label>
@@ -73,13 +73,6 @@ export default function Home() {
           <div className="card"><h2>Dollar</h2><div className="price">{dollar?.price ? `Rs ${dollar.price}` : 'Rate aa raha hai…'}</div><div className="small">Interbank{dollar?.date ? ` · ${dollar.date}` : ' · SBP closing, 2 Nov 2026'} (live FX se update hota hai)</div></div>
         </section>
         <AdSlot placement="hero" label="Bare rates ke neeche" />
-
-        <section className="founder" aria-label="Website ke Malik">
-          <h2>👤 Website ke Malik</h2>
-          <img src="/zohaib.jpg" alt="Zohaib Ali Jutt — Aaj Ka Rate ke malik" className="founder-photo" loading="lazy" />
-          <p className="founder-name">Zohaib Ali Jutt</p>
-          <p>Aaj Ka Rate maine aam logon ke liye banaya hai — taake har koi roz ke rate asani se, muft me, ek jagah dekh sake.</p>
-        </section>
 
         <section>
           <h2>🌤️ Mosam ke Hisaab se Bazaar — {season.seasonName}</h2>
