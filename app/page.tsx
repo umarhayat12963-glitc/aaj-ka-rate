@@ -74,6 +74,13 @@ export default function Home() {
         </section>
         <AdSlot placement="hero" label="Bare rates ke neeche" />
 
+        <section className="founder" aria-label="Website ke Malik">
+          <h2>👤 Website ke Malik</h2>
+          <img src="/zohaib.jpg" alt="Zohaib Ali Jutt — Aaj Ka Rate ke malik" className="founder-photo" loading="lazy" />
+          <p className="founder-name">Zohaib Ali Jutt</p>
+          <p>Aaj Ka Rate maine aam logon ke liye banaya hai — taake har koi roz ke rate asani se, muft me, ek jagah dekh sake.</p>
+        </section>
+
         <section>
           <h2>🌤️ Mosam ke Hisaab se Bazaar — {season.seasonName}</h2>
           <p><span className="badge">🌟 NAYA — Mosam ki Nayi Cheez</span></p>
