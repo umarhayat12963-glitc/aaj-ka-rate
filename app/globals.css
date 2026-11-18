@@ -16,13 +16,28 @@ button:hover,button:focus-visible,button:active,input[type="submit"]:hover,input
 a{color:#e8c766}
 header,main,footer{max-width:900px;margin:0 auto;padding:0 16px}
 .hero{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+.hero-title{margin:20px 0 4px;font-size:22px}
+.hero .card{position:relative;overflow:hidden;border:1px solid var(--gold);transition:transform .15s ease,box-shadow .15s ease}
+.hero .card::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--green))}
+.hero .card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.5)}
+.hero .price{font-size:36px}
 .card{background:var(--card);border:1px solid var(--green);border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.4)}
 .card h2{margin:0 0 4px;font-size:18px}
 .price{font-size:32px;font-weight:800;line-height:1.1}
 .small{font-size:15px;color:#b8c4bb}
-.ratedate{font-size:16px;font-weight:700;color:#e8c766}
+.ratedate{display:inline-block;font-size:17px;font-weight:800;color:#14201a;background:linear-gradient(90deg,#e8c766,#c9a227);border-radius:999px;padding:2px 10px;margin-left:6px;white-space:nowrap}
 .badge{display:inline-block;background:#e8c766;color:#14201a;border:1px solid var(--gold);border-radius:999px;padding:2px 10px;font-size:14px;font-weight:700}
 .badge.ended{background:#2a2f2b;color:#e5e7eb;border-color:#6b7280}
+.badge.outdated{background:#92400e;color:#ffedd5;border-color:#f59e0b;margin-left:6px}
+.updated{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:10px;font-size:16px;font-weight:700;color:#e8c766;background:rgba(232,199,102,.12);border:1px solid rgba(232,199,102,.45);border-radius:999px;padding:4px 12px}
+.updated strong{color:#fff}
+.outdated-note{color:#fbbf24;font-weight:700}
+.searchbar{display:flex;align-items:center;gap:10px;margin:14px 0 4px;padding:6px 8px 6px 16px;background:#1a261f;border:2px solid var(--gold);border-radius:999px;box-shadow:0 0 0 2px rgba(232,199,102,.25),0 4px 16px rgba(0,0,0,.4)}
+.searchbar:focus-within{box-shadow:0 0 0 3px rgba(232,199,102,.6),0 0 20px rgba(232,199,102,.35)}
+.searchbar span{font-size:20px}
+.searchbar input{flex:1;min-width:0;border:0;background:transparent;padding:10px 0;font-size:19px}
+.searchbar input:focus{outline:none}
+.searchclear{flex:none;width:36px;height:36px;padding:0;border-radius:50%;background:#2e4a3a;color:#e8c766;font-size:16px;line-height:1}
 input,select,button{font-size:18px;padding:12px;border-radius:12px;border:1px solid #2e4a3a;background:#1a261f;color:var(--text)}
 select option{background:#1a261f;color:var(--text)}
 label{font-weight:600}

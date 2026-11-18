@@ -30,6 +30,23 @@ export default function Home() {
   const findItem = (id: string) => CATEGORIES.flatMap((c) => c.items).find((i) => i.id === id) ?? staticFindItem(id);
   const season = useMemo(() => getSeason(), []);
   const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Karachi' });
+  // Rate ki date kitni purani hai — 7 din se zyada purana rate "Purana rate" kehlata hai.
+  const OUTDATED_AFTER_DAYS = 7;
+  const parseRateDate = (d?: string): Date | null => {
+    if (!d) return null;
+    const parsed = new Date(d);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  };
+  const daysOld = (d?: string): number | null => {
+    const rd = parseRateDate(d);
+    const td = parseRateDate(today);
+    if (!rd || !td) return null;
+    return Math.max(0, Math.floor((td.getTime() - rd.getTime()) / 86400000));
+  };
+  const isOutdated = (d?: string): boolean => {
+    const age = daysOld(d);
+    return age !== null && age > OUTDATED_AFTER_DAYS;
+  };
   const query = q.trim().toLowerCase();
   const petrol = findItem('petrol');
   const sona = findItem('sona24');
@@ -57,20 +74,25 @@ export default function Home() {
         <h1 className="sitetitle"><img src="/zohaib.jpg" alt="Zohaib Ali Jutt" className="title-photo" />Aaj Ka Rate</h1>
         <p className="small">{today} · Pakistan · {season.seasonName} · {season.monthLabel}</p>
         <p><a href="/admin">🔐 Ads Admin Panel</a></p>
-        <label>Search: <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Petrol, atta, tamatar, dollar…" aria-label="Rate search" /></label>
+        <div className="searchbar">
+          <span aria-hidden="true">🔍</span>
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rate dhoondhen: Petrol, atta, tamatar, dollar…" aria-label="Rate search" />
+          {q && <button type="button" className="searchclear" onClick={() => setQ('')} aria-label="Search saaf karen">✕</button>}
+        </div>
       </header>
       <main>
         <section>
           <h2>Taaruf — Aaj Ka Rate kya hai?</h2>
           <p>Aaj Ka Rate aam logon ke liye banaya gaya hai. Yahan rozana petrol, diesel, sona, chandi, dollar, karyana aur Lahore ki sarkari sabzi aur phal ke rate ek jagah milte hain. Rate asan Roman Urdu me, bare saaf haroof me hain, taake slow network par bhi jaldi khulen.</p>
-          <p className="small">Note: Har rate ke samne us ki date likhi hai, taake pata rahe ke rate kis din ka hai. Source aur history dekhne ke liye rate par tap karen. Jin rates ka koi verified source nahi mila, un par koi number invent nahi kiya gaya, wo “Rate aa raha hai…” dikhate hain.</p>
+          <p className="small">Note: Har rate ke samne us ki date likhi hai, taake pata rahe ke rate kis din ka hai. Jo rate 7 din se zyada purana ho, us par “Purana rate” ka badge lag jata hai. Source aur history dekhne ke liye rate par tap karen. Jin rates ka koi verified source nahi mila, un par koi number invent nahi kiya gaya, wo “Rate aa raha hai…” dikhate hain.</p>
         </section>
 
         <AdSlot placement="top" label="Top" />
+        <h2 className="hero-title">⭐ Aaj ke Ahem Rates</h2>
         <section className="hero" aria-label="Bare rates">
-          <div className="card"><h2>Petrol</h2><div className="price">{petrol?.price ? `Rs ${petrol.price}` : 'Rate aa raha hai…'}</div><div className="small">per litre · OGRA{petrol?.date ? ` · ${petrol.date}` : ''}</div></div>
-          <div className="card"><h2>Sona 24K</h2><div className="price">{sona?.price ? `Rs ${sona.price}` : 'Rate aa raha hai…'}</div><div className="small">per tola · APSGJA{sona?.date ? `, ${sona.date}` : ', 2 Nov 2026'}</div></div>
-          <div className="card"><h2>Dollar</h2><div className="price">{dollar?.price ? `Rs ${dollar.price}` : 'Rate aa raha hai…'}</div><div className="small">Interbank{dollar?.date ? ` · ${dollar.date}` : ' · SBP closing, 2 Nov 2026'} (live FX se update hota hai)</div></div>
+          <div className="card"><h2>Petrol</h2><div className="price">{petrol?.price ? `Rs ${petrol.price}` : 'Rate aa raha hai…'}</div><div className="small">per litre · OGRA</div><div className="updated">🕒 Last updated: <strong>{petrol?.date ?? '—'}</strong>{isOutdated(petrol?.date) && <span className="badge outdated">⚠ Purana rate</span>}</div></div>
+          <div className="card"><h2>Sona 24K</h2><div className="price">{sona?.price ? `Rs ${sona.price}` : 'Rate aa raha hai…'}</div><div className="small">per tola · APSGJA</div><div className="updated">🕒 Last updated: <strong>{sona?.date ?? '2 Nov 2026'}</strong>{isOutdated(sona?.date) && <span className="badge outdated">⚠ Purana rate</span>}</div></div>
+          <div className="card"><h2>Dollar</h2><div className="price">{dollar?.price ? `Rs ${dollar.price}` : 'Rate aa raha hai…'}</div><div className="small">Interbank · SBP closing (live FX se update hota hai)</div><div className="updated">🕒 Last updated: <strong>{dollar?.date ?? '2 Nov 2026'}</strong>{isOutdated(dollar?.date) && <span className="badge outdated">⚠ Purana rate</span>}</div></div>
         </section>
         <AdSlot placement="hero" label="Bare rates ke neeche" />
 
@@ -78,7 +100,10 @@ export default function Home() {
           <h2>🌤️ Mosam ke Hisaab se Bazaar — {season.seasonName}</h2>
           <p><span className="badge">🌟 NAYA — Mosam ki Nayi Cheez</span></p>
           <h3>Nayi aayi hui cheezein</h3>
-          <ul>{seasonalList(season.newItems).map((i) => <li key={i.id}>{i.name} — {i.price === null ? 'Rate aa raha hai…' : `Rs ${i.price} / ${i.unit.replace('Rs / ', '')}`}{i.date ? ` · ${i.date}` : ''} <span className="badge">NAYA</span></li>)}</ul>
+          <ul>{seasonalList(season.newItems).map((i) => {
+            const age = daysOld(i.date);
+            return <li key={i.id}>{i.name} — {i.price === null ? 'Rate aa raha hai…' : `Rs ${i.price} / ${i.unit.replace('Rs / ', '')}`}{i.date && <span className="ratedate">📅 {i.date}</span>}{age !== null && age > OUTDATED_AFTER_DAYS && <span className="badge outdated">⚠ Purana rate</span>} <span className="badge">NAYA</span></li>;
+          })}</ul>
           <h3>Mousam me</h3>
           <ul>{seasonalList(season.inSeasonItems).map((i) => <li key={i.id}>{i.name}</li>)}</ul>
           <h3>Jald Ane Wala</h3>
@@ -94,17 +119,22 @@ export default function Home() {
             {cat.items.map((it) => {
               const s = seasonStatus(it.id, season);
               const ended = s === 'ended';
+              const age = daysOld(it.date);
+              const outdated = age !== null && age > OUTDATED_AFTER_DAYS;
               return (
                 <div key={it.id}>
                   <button className="rowbtn" onClick={() => setOpenId(openId === it.id ? null : it.id)}>
                     <strong>{it.name}</strong> — {ended ? 'Mosam Khatam' : priceText(it.price, it.unit, it.displayPrice)}
-                    {!ended && it.price !== null && it.date && <span className="ratedate"> · {it.date}</span>}
+                    {!ended && it.price !== null && it.date && <span className="ratedate">📅 {it.date}</span>}
+                    {!ended && outdated && <span className="badge outdated">⚠ Purana rate</span>}
                     {s === 'new' && <span className="badge"> 🌟 NAYA</span>}
                     {it.isSample && <span className="small"> · Sample</span>}
                   </button>
                   {openId === it.id && (
                     <div className="card">
                       <p>Source: {it.source}</p>
+                      <p>🕒 Last updated: <strong>{it.date ?? '—'}</strong></p>
+                      {outdated && <p className="outdated-note">⚠ Ye rate {age} din purana hai — naya verified rate aate hi update ho jayega.</p>}
                       <p>History: {it.history.length ? it.history.map((h) => `Rs ${h}`).join(' → ') : 'Pehli history refresh ke baad aaye gi.'}</p>
                       <p className="small">Kal se farq: {it.history.length >= 2 && it.price !== null ? `Rs ${(it.price - it.history[it.history.length - 2]).toFixed(2)} ${it.price >= it.history[it.history.length - 2] ? 'mehnga' : 'sasta'}` : '—'}</p>
                     </div>
