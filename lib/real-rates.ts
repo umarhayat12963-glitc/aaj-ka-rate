@@ -71,6 +71,30 @@
 //   daily cut (The News, Dawn, PakObserver, PakWheels,
 //   ARY News, IPP News, all reporting the same
 //   OGRA release).
+//   OGRA notification announced 19 Nov 2026, effective 20 Nov 2026:
+//   petrol Rs 323 (up Rs 1 from Rs 322), diesel
+//   Rs 355 (unchanged) — first increase after twelve
+//   consecutive daily cuts (PakObserver, Kashmir English,
+//   Pakistan Point, Daily Times, Business Recorder, all
+//   reporting the same OGRA release).
+//   OGRA notification announced 20 Nov 2026, effective 21 Nov 2026:
+//   petrol Rs 322 (down Re 1 from Rs 323), diesel
+//   Rs 357 (up Rs 2 from Rs 355) (The News, Aaj News,
+//   Pakistan Point, carmandi, newsora24, petroprices.pk, all
+//   reporting the same OGRA release; The News says the rates
+//   remain in effect until 23 Nov, but the window is still
+//   added as one day only, per the daily framework).
+//   OGRA notification announced 23 Nov 2026, effective 24 Nov 2026:
+//   petrol Rs 319 (down Rs 3 from Rs 322), diesel
+//   Rs 357 (unchanged) (The News, PakWheels,
+//   Kashmir English, Pakistan Point, IPP News,
+//   all reporting the same OGRA release).
+//   OGRA notification announced 24 Nov 2026, effective 25 Nov 2026:
+//   petrol Rs 318 (down Re 1 from Rs 319), diesel
+//   Rs 353 (down Rs 4 from Rs 357) (mix.com.pk, Feature
+//   Pakistan citing Dawn and Express Tribune, APP wire,
+//   DNA News Agency, The Global Times, 365news, Bol News,
+//   all reporting the same OGRA release).
 //   Under the daily framework each window is one day only, so
 //   after its day the fallback shows the last verified rate,
 //   dated, instead of a stale rate presented as today's.
@@ -184,6 +208,22 @@ const PETROL_WINDOWS: {
   {
     from: '2026-11-19', to: '2026-11-19', petrol: 322, diesel: 355,
     source: 'OGRA notification announced 18 Nov 2026, effective 19 Nov 2026',
+  },
+  {
+    from: '2026-11-20', to: '2026-11-20', petrol: 323, diesel: 355,
+    source: 'OGRA notification announced 19 Nov 2026, effective 20 Nov 2026',
+  },
+  {
+    from: '2026-11-21', to: '2026-11-21', petrol: 322, diesel: 357,
+    source: 'OGRA notification announced 20 Nov 2026, effective 21 Nov 2026',
+  },
+  {
+    from: '2026-11-24', to: '2026-11-24', petrol: 319, diesel: 357,
+    source: 'OGRA notification announced 23 Nov 2026, effective 24 Nov 2026',
+  },
+  {
+    from: '2026-11-25', to: '2026-11-25', petrol: 318, diesel: 353,
+    source: 'OGRA notification announced 24 Nov 2026, effective 25 Nov 2026',
   },
 ];
 
