@@ -104,8 +104,8 @@
 //   Under the daily framework each window is one day only, so
 //   after its day the fallback shows the last verified rate,
 //   dated, instead of a stale rate presented as today's.
-// - Dollar/currency: SBP interbank closing 2 Nov 2026 (Business
-//   Recorder / UrduPoint / ProPakistani, all Rs 276.72 for USD).
+// - Dollar/currency: SBP interbank closing 25 Nov 2026 (Searchable
+//   / Investify / Daily Imroz, all Rs 276.46 for USD).
 //   Live FX after that comes from the keyless open.er-api.com
 //   endpoint (updates once a day, poll at most once an hour —
 //   this module caches for 1 hour). Attribution required by that
@@ -267,7 +267,7 @@ export function petrolForDate(dateStr: string): { petrol: SourcedPrice; diesel: 
 
 // ---- Currency / gold / Lahore: dated seeds (fallback, date in source) ----
 export const FX_SEED: Record<string, { price: number; source: string }> = {
-  usd: { price: 276.72, source: 'SBP interbank closing, 2 Nov 2026 (Business Recorder / UrduPoint)' },
+  usd: { price: 276.46, source: 'SBP interbank closing, 25 Nov 2026 (Searchable / Investify / Daily Imroz)' },
   gbp: { price: 371.51, source: 'SBP closing, 2 Nov 2026 (UrduPoint / Forex Association)' },
   eur: { price: 310.17, source: 'SBP closing, 2 Nov 2026 (UrduPoint)' },
   sar: { price: 73.88, source: 'Interbank, 2 Nov 2026 (HamariWeb, SBP rates)' },

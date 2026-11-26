@@ -39,7 +39,7 @@ export const CATEGORIES: Category[] = [
     item('chandi', 'Chandi', 'Rs / tola', GOLD_SEED.chandi.price, GOLD_SEED.chandi.source, [5388, 5488], 'Sona & Chandi', undefined, '2 Nov 2026'),
   ]},
   { id: 'currency', name: 'Dollar & Currency', items: [
-    item('usd', 'Dollar — Interbank', 'Rs', FX_SEED.usd.price, FX_SEED.usd.source, [276.75, 276.72], 'Dollar & Currency', undefined, '2 Nov 2026'),
+    item('usd', 'Dollar — Interbank', 'Rs', FX_SEED.usd.price, FX_SEED.usd.source, [276.72, 276.46], 'Dollar & Currency', undefined, '25 Nov 2026'),
     item('aed', 'UAE Dirham', 'Rs', FX_SEED.aed.price, FX_SEED.aed.source, [], 'Dollar & Currency', undefined, '2 Nov 2026'),
     item('sar', 'Saudi Riyal', 'Rs', FX_SEED.sar.price, FX_SEED.sar.source, [], 'Dollar & Currency', undefined, '2 Nov 2026'),
     item('gbp', 'British Pound', 'Rs', FX_SEED.gbp.price, FX_SEED.gbp.source, [371.19, 371.51], 'Dollar & Currency', undefined, '2 Nov 2026'),
