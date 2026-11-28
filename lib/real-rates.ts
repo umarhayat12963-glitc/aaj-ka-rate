@@ -108,6 +108,14 @@
 //   IPP News, Investify, Jarida Today, CarAdvisers citing
 //   Dawn, petrolrates.pk, oilprices.pk, ARY News, all
 //   reporting the same OGRA release).
+//   OGRA notification announced 27 Nov 2026, effective 28 Nov 2026:
+//   petrol Rs 312 (down Re 1 from Rs 313), diesel
+//   Rs 346 (unchanged) — sixteenth consecutive
+//   daily cut (Pakistan Today, PakObserver, 365news,
+//   Sial News, Express Tribune, Burak Digital, all
+//   reporting the same OGRA release). Sources say the
+//   rates apply 28–30 Nov, but the window is still
+//   added as one day only, per the daily framework.
 //   Under the daily framework each window is one day only, so
 //   after its day the fallback shows the last verified rate,
 //   dated, instead of a stale rate presented as today's.
@@ -245,6 +253,10 @@ const PETROL_WINDOWS: {
   {
     from: '2026-11-27', to: '2026-11-27', petrol: 313, diesel: 346,
     source: 'OGRA notification announced 26 Nov 2026, effective 27 Nov 2026',
+  },
+  {
+    from: '2026-11-28', to: '2026-11-28', petrol: 312, diesel: 346,
+    source: 'OGRA notification announced 27 Nov 2026, effective 28 Nov 2026',
   },
 ];
 
